@@ -1,4 +1,4 @@
-# Project Name
+# SQL Parser
 
 This project is created to understand the internal workings of SQL Query Parsing 
 
@@ -20,4 +20,4 @@ Make sure you have Go installed on your system. You can download it from the [of
 
 ```shell
 git clone https://github.com/your-username/your-repo.git
-cd your-repo
+cd your-repo ```
