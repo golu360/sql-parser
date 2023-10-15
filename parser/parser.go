@@ -3,6 +3,7 @@ package parser
 import (
 	"errors"
 	"fmt"
+	"golu360/sql-parser/states"
 	"strings"
 )
 
@@ -10,7 +11,7 @@ type sqlparser struct {
 	sql       string
 	tokens    []string
 	pos       int
-	state     string
+	state     states.State
 	queryType string
 }
 
@@ -20,7 +21,7 @@ func (p *sqlparser) tokenize() (bool, error) {
 		return len(tokens) == 0, errors.New("Empty query")
 	}
 	p.tokens = tokens
-	p.queryType = "TOKENIZE_COMPLETE"
+	p.state = states.TOKENIZE_COMPLETE
 	return len(tokens) == 1, nil
 }
 func (p *sqlparser) peek() string {
@@ -31,7 +32,7 @@ func (p *sqlparser) peek() string {
 }
 
 func Parse(sql string) {
-	var queryParser sqlparser = sqlparser{sql, nil, 0, "TOKENIZE", ""}
+	var queryParser sqlparser = sqlparser{sql, nil, 0, states.TOKENIZE, ""}
 	_, err := queryParser.tokenize()
 	if err != nil {
 		fmt.Println(err)
@@ -41,7 +42,7 @@ func Parse(sql string) {
 }
 
 func (p *sqlparser) setQueryType() {
-	p.queryType = "QUERY_TYPE_PARSE"
+	p.state = states.QUERY_TYPE_PARSE
 	switch strings.ToUpper(p.peek()) {
 	case "SELECT":
 		p.queryType = "SELECT"
@@ -52,6 +53,6 @@ func (p *sqlparser) setQueryType() {
 	case "DELETE":
 		p.queryType = "DELETE"
 	}
-	p.state = "QUERY_TYPE_PARSE_COMPLETE"
+	p.state = states.QUERY_TYPE_PARSE_COMPLETE
 
 }
