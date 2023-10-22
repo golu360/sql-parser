@@ -54,5 +54,11 @@ func (p *sqlparser) setQueryType() {
 		p.queryType = "DELETE"
 	}
 	p.state = states.QUERY_TYPE_PARSE_COMPLETE
+	p.pop()
 
+}
+
+func (p *sqlparser) pop() string {
+	p.pos += 1
+	return p.tokens[p.pos]
 }
